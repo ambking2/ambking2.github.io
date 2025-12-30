@@ -1,228 +1,158 @@
 <!DOCTYPE html>
-<html lang="fa" dir="ltr">
+<html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyAI Chat – چت هوشمند رایگان</title>
-    <meta name="description" content="چت رایگان با مدل‌های هوش مصنوعی پیشرفته">
-    
-    <!-- PWA manifest برای مینی‌اپ -->
-    <link rel="manifest" href="data:application/manifest+json,{
-        &quot;name&quot;:&quot;MyAI Chat&quot;,
-        &quot;short_name&quot;:&quot;MyAI&quot;,
-        &quot;start_url&quot;:&quot;.&quot;,
-        &quot;display&quot;:&quot;standalone&quot;,
-        &quot;background_color&quot;:&quot;#000000&quot;,
-        &quot;theme_color&quot;:&quot;#6366f1&quot;,
-        &quot;icons&quot;:[{
-            &quot;src&quot;:&quot;https://via.placeholder.com/192x192/6366f1/ffffff?text=AI&quot;,
-            &quot;sizes&quot;:&quot;192x192&quot;,
-            &quot;type&quot;:&quot;image/png&quot;
-        },{
-            &quot;src&quot;:&quot;https://via.placeholder.com/512x512/6366f1/ffffff?text=AI&quot;,
-            &quot;sizes&quot;:&quot;512x512&quot;,
-            &quot;type&quot;:&quot;image/png&quot;
-        }]
-    }">
-    
-    <style>
-        :root {
-            --bg: #000000;
-            --text: #e0e0e0;
-            --user-bg: #6366f1;
-            --ai-bg: #1f1f1f;
-            --input-bg: #111111;
-            --border: #333333;
-        }
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        header {
-            padding: 16px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-            font-size: 20px;
-            font-weight: 600;
-        }
-        #chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            line-height: 1.5;
-            word-wrap: break-word;
-        }
-        .user {
-            align-self: flex-end;
-            background: var(--user-bg);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        .ai {
-            align-self: flex-start;
-            background: var(--ai-bg);
-            border: 1px solid var(--border);
-            border-bottom-left-radius: 4px;
-        }
-        .ai pre {
-            background: #0d0d0d;
-            padding: 12px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 8px 0;
-        }
-        #input-area {
-            padding: 16px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        #model-select {
-            padding: 10px;
-            background: var(--input-bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-        }
-        #input-box {
-            display: flex;
-            gap: 8px;
-        }
-        #message-input {
-            flex: 1;
-            padding: 14px;
-            background: var(--input-bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            resize: none;
-            font-size: 16px;
-        }
-        #send-btn {
-            padding: 0 20px;
-            background: #6366f1;
-            color: white;
-            border: none;
-            border-radius: 24px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        footer {
-            text-align: center;
-            padding: 12px;
-            font-size: 12px;
-            color: #666;
-        }
-        .typing {
-            font-style: italic;
-            color: #888;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>چت با ربات</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #1e1e2f;
+    color: #f5f5f5;
+}
+header {
+    padding: 1rem;
+    text-align: center;
+    background-color: #2d2d44;
+    font-size: 1.5rem;
+}
+#modelInfo {
+    margin: 1rem;
+    padding: 0.8rem;
+    background-color: #2d2d44;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+#chatBox {
+    height: 65vh;
+    overflow-y: auto;
+    padding: 1rem;
+}
+.message {
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    max-width: 70%;
+}
+.message.user {
+    background-color: #4e73df;
+    color: white;
+    margin-left: auto;
+}
+.message.bot {
+    background-color: #2d2d44;
+    color: #f5f5f5;
+    margin-right: auto;
+}
+#inputArea {
+    display: flex;
+    padding: 1rem;
+    background-color: #2d2d44;
+}
+#inputArea input[type="text"] {
+    flex: 1;
+    padding: 0.7rem;
+    border-radius: 5px;
+    border: none;
+    margin-right: 0.5rem;
+}
+#inputArea button {
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #4e73df;
+    color: white;
+    cursor: pointer;
+}
+#inputArea input[type="file"] {
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
-    <header>MyAI Chat – چت رایگان با هوش مصنوعی</header>
+
+<header>ربات چت من</header>
+
+<!-- فقط پراوایدر Master -->
+<div id="modelInfo">
+    پراوایدر: Master by api.airforce
+</div>
+
+<div id="chatBox"></div>
+
+<div id="inputArea">
+    <input type="text" id="userInput" placeholder="پیام خود را بنویسید...">
+    <button id="sendBtn">ارسال</button>
+    <input type="file" id="imageUpload" accept="image/*">
+</div>
+
+<script>
+// ارسال پیام کاربر
+document.getElementById('sendBtn').addEventListener('click', async () => {
+    const input = document.getElementById('userInput');
+    if(input.value.trim() === "") return;
+    const chatBox = document.getElementById('chatBox');
     
-    <div id="chat-container">
-        <div class="message ai">سلام! من یک دستیار هوش مصنوعی هستم. چطور می‌تونم کمکتون کنم؟</div>
-    </div>
-    
-    <div id="input-area">
-        <select id="model-select">
-            <option value="gpt-4o-mini">GPT-4o Mini (سریع)</option>
-            <option value="gpt-4o">GPT-4o</option>
-            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-            <option value="claude-3.5-sonnet">Claude 3.5 Sonnet</option>
-            <option value="llama-3.1-70b">Llama 3.1 70B</option>
-        </select>
-        
-        <div id="input-box">
-            <textarea id="message-input" rows="1" placeholder="پیام خود را بنویسید..."></textarea>
-            <button id="send-btn">ارسال</button>
-        </div>
-    </div>
-    
-    <footer>Powered by g4f • برند شما</footer>
+    // پیام کاربر
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.textContent = input.value;
+    chatBox.appendChild(userMsg);
 
-    <script type="module">
-        import Client from 'https://g4f.dev/dist/js/client.js';
+    // پیام در حال پردازش
+    const botMsg = document.createElement('div');
+    botMsg.className = 'message bot';
+    botMsg.textContent = "در حال پردازش...";
+    chatBox.appendChild(botMsg);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-        const client = new Client();
-        const chatContainer = document.getElementById('chat-container');
-        const messageInput = document.getElementById('message-input');
-        const sendBtn = document.getElementById('send-btn');
-        const modelSelect = document.getElementById('model-select');
-
-        function addMessage(content, role = 'ai') {
-            const div = document.createElement('div');
-            div.className = `message ${role}`;
-            div.innerHTML = content.replace(/\n/g, '<br>');
-            chatContainer.appendChild(div);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const prompt = messageInput.value.trim();
-            if (!prompt) return;
-
-            addMessage(prompt, 'user');
-            messageInput.value = '';
-            sendBtn.disabled = true;
-
-            const typing = document.createElement('div');
-            typing.className = 'message ai typing';
-            typing.textContent = 'در حال تایپ...';
-            chatContainer.appendChild(typing);
-
-            try {
-                const response = await client.chat.completions.create({
-                    model: modelSelect.value,
-                    messages: [{ role: "user", content: prompt }]
-                });
-
-                typing.remove();
-                const content = response.choices[0].message.content;
-                addMessage(content || 'بدون پاسخ');
-            } catch (error) {
-                typing.remove();
-                addMessage(`خطا: ${error.message || 'مشکل در ارتباط'}`, 'ai');
-                console.error(error);
-            } finally {
-                sendBtn.disabled = false;
-                messageInput.focus();
-            }
-        }
-
-        sendBtn.onclick = sendMessage;
-        messageInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+    // --- اتصال به API Master by api.airforce ---
+    try {
+        const response = await fetch('https://api.airforce/master', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer API_KEY_HERE' // کلید API واقعی
+            },
+            body: JSON.stringify({
+                message: input.value,
+                model: 'master' // مدل فقط Master
+            })
         });
+        const data = await response.json();
+        botMsg.textContent = data.reply || "پاسخی دریافت نشد.";
+    } catch (err) {
+        botMsg.textContent = "خطا در دریافت پاسخ از API.";
+        console.error(err);
+    }
 
-        // تنظیم ارتفاع خودکار textarea
-        messageInput.addEventListener('input', () => {
-            messageInput.style.height = 'auto';
-            messageInput.style.height = messageInput.scrollHeight + 'px';
-        });
-    </script>
+    input.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+// آپلود عکس
+document.getElementById('imageUpload').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const chatBox = document.getElementById('chatBox');
+    const imgDiv = document.createElement('div');
+    imgDiv.className = 'message user';
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.style.maxWidth = "200px";
+    img.style.borderRadius = "10px";
+    imgDiv.appendChild(img);
+    chatBox.appendChild(imgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // --- ارسال عکس به API Master اگر نیاز باشه ---
+    // fetch('https://api.airforce/master/upload', {...})
+});
+</script>
+
 </body>
 </html>
